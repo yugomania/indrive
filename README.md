@@ -33,6 +33,20 @@ A high-converting, mobile-first driver onboarding questionnaire and earnings cal
      2. **Via URL**: Share your website with `?ref=YOUR_CODE` (e.g. `https://yoursite.com/?ref=MYCODE123`), which auto-saves for the visitor.
      3. **Via Code**: Edit `js/config.js` to change `DEFAULT_REFERRAL_CODE`.
 
+4. **Email Lead Notifications (Web3Forms Integration)**:
+   - When prospective drivers fill in their **Name** and **Phone / WhatsApp Number** and click **Finalize**, their lead information is instantly emailed to you.
+   - **Lead Details Included in Email**:
+     - Driver Name & Phone / WhatsApp Number
+     - City (Lagos or Abuja)
+     - Vehicle Category & Driver's License Status
+     - Work Commitment & Daily/Weekly Schedule
+     - Projected Gross & Net Take-Home Pay
+     - Timestamp & Applied Referral Code
+   - **How to activate**:
+     1. Go to [web3forms.com](https://web3forms.com) and enter your email address to receive your free Access Key.
+     2. Click the ⚙️ gear icon on the website and paste your Access Key (or set `WEB3FORMS_ACCESS_KEY` in `js/config.js`).
+     3. All future driver submissions will land directly in your email inbox!
+
 ---
 
 ## 🚀 Quick Start & Deployment

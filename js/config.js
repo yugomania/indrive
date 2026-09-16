@@ -45,7 +45,14 @@ const CONFIG = {
     'comfort': { name: 'Comfort / SUV', multiplier: 1.25, icon: 'star' },
     'moto': { name: 'Motorcycle / Scooter', multiplier: 0.75, icon: 'bike' },
     'delivery': { name: 'Courier / Delivery Van', multiplier: 1.15, icon: 'truck' }
-  }
+  },
+
+  // Lead Notification Email: All driver applications with name & phone are sent directly here!
+  NOTIFICATION_EMAIL: 'ugoodagu@gmail.com',
+
+  // Optional: Web3Forms Access Key for sending lead notifications directly to your email
+  // (Get a free key instantly at https://web3forms.com if you prefer Web3Forms)
+  WEB3FORMS_ACCESS_KEY: ''
 };
 
 // Helper to get active referral code (from URL query, localStorage, or default)
@@ -72,7 +79,48 @@ function setActiveReferralCode(code) {
   return getActiveReferralCode();
 }
 
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { CONFIG, getActiveReferralCode, setActiveReferralCode };
+// Helper to get active Lead Notification Email
+function getNotificationEmail() {
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem('indrive_notification_email') || CONFIG.NOTIFICATION_EMAIL || 'ugoodagu@gmail.com';
+  }
+  return CONFIG.NOTIFICATION_EMAIL || 'ugoodagu@gmail.com';
 }
+
+function setNotificationEmail(email) {
+  const trimmed = email ? email.trim() : '';
+  if (typeof localStorage !== 'undefined') {
+    localStorage.setItem('indrive_notification_email', trimmed);
+  }
+  return trimmed;
+}
+
+// Helper to get active Web3Forms Access Key (from localStorage or CONFIG)
+function getFormAccessKey() {
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem('indrive_form_access_key') || CONFIG.WEB3FORMS_ACCESS_KEY || '';
+  }
+  return CONFIG.WEB3FORMS_ACCESS_KEY || '';
+}
+
+function setFormAccessKey(key) {
+  const trimmed = key ? key.trim() : '';
+  if (typeof localStorage !== 'undefined') {
+    localStorage.setItem('indrive_form_access_key', trimmed);
+  }
+  return trimmed;
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { 
+    CONFIG, 
+    getActiveReferralCode, 
+    setActiveReferralCode, 
+    getNotificationEmail, 
+    setNotificationEmail, 
+    getFormAccessKey, 
+    setFormAccessKey 
+  };
+}
+
 

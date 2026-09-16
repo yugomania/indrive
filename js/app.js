@@ -20,7 +20,9 @@
     driverName: '',
     driverPhone: '',
     referralCode: getActiveReferralCode(),
-    customTargetUrl: localStorage.getItem('indrive_custom_target_url') || ''
+    customTargetUrl: localStorage.getItem('indrive_custom_target_url') || '',
+    accessKey: getFormAccessKey(),
+    notificationEmail: getNotificationEmail() || 'ugoodagu@gmail.com'
   };
 
   const calculator = new EarningsCalculator(CONFIG);
@@ -76,6 +78,8 @@
   const configModal = document.getElementById('configModal');
   const customReferralCodeInput = document.getElementById('customReferralCodeInput');
   const customTargetUrlInput = document.getElementById('customTargetUrlInput');
+  const customEmailInput = document.getElementById('customEmailInput');
+  const customAccessKeyInput = document.getElementById('customAccessKeyInput');
   const saveConfigBtn = document.getElementById('saveConfigBtn');
   const cancelConfigBtn = document.getElementById('cancelConfigBtn');
   const toastMsg = document.getElementById('toastMsg');
@@ -190,11 +194,25 @@
     // Finish & Try It
     const finishAndTryBtn = document.getElementById('finishAndTryBtn');
     if (finishAndTryBtn) {
-      finishAndTryBtn.addEventListener('click', () => {
+      finishAndTryBtn.addEventListener('click', async () => {
         const nameInput = document.getElementById('driverNameInput');
         const phoneInput = document.getElementById('driverPhoneInput');
         if (nameInput) state.driverName = nameInput.value.trim();
         if (phoneInput) state.driverPhone = phoneInput.value.trim();
+
+        // Loading feedback
+        const originalBtnHTML = finishAndTryBtn.innerHTML;
+        finishAndTryBtn.disabled = true;
+        finishAndTryBtn.innerHTML = 'Securing Bonus & Unlocking... <span class="btn-spinner"></span>';
+
+        try {
+          await sendLeadNotification();
+        } catch (err) {
+          console.warn('Lead submission notice:', err);
+        } finally {
+          finishAndTryBtn.disabled = false;
+          finishAndTryBtn.innerHTML = originalBtnHTML;
+        }
 
         goToStep(6);
         triggerConfetti();
@@ -347,6 +365,8 @@
   function openModal() {
     if (customReferralCodeInput) customReferralCodeInput.value = state.referralCode;
     if (customTargetUrlInput) customTargetUrlInput.value = state.customTargetUrl;
+    if (customEmailInput) customEmailInput.value = state.notificationEmail || '';
+    if (customAccessKeyInput) customAccessKeyInput.value = state.accessKey || '';
     if (configModal) configModal.classList.add('active');
   }
 
@@ -357,6 +377,8 @@
   function saveConfig() {
     const newCode = customReferralCodeInput ? customReferralCodeInput.value.trim() : '';
     const newUrl = customTargetUrlInput ? customTargetUrlInput.value.trim() : '';
+    const newEmail = customEmailInput ? customEmailInput.value.trim() : '';
+    const newKey = customAccessKeyInput ? customAccessKeyInput.value.trim() : '';
 
     if (newCode) {
       state.referralCode = setActiveReferralCode(newCode);
@@ -364,9 +386,116 @@
     state.customTargetUrl = newUrl;
     localStorage.setItem('indrive_custom_target_url', newUrl);
 
+    state.accessKey = setFormAccessKey(newKey);
+    state.notificationEmail = setNotificationEmail(newEmail || 'ugoodagu@gmail.com');
+
     updateReferralUI();
     closeModal();
-    showToast(`Referral link updated to ${state.referralCode}`);
+    showToast('Settings & notification email saved!');
+  }
+
+  // Send Lead Notification to Owner's Email (ugoodagu@gmail.com)
+  async function sendLeadNotification() {
+    const accessKey = state.accessKey || getFormAccessKey();
+    const recipientEmail = state.notificationEmail || getNotificationEmail() || 'ugoodagu@gmail.com';
+
+    try {
+      const calcResults = calculator.calculate({
+        cityKey: state.cityKey,
+        workCommitment: state.workCommitment,
+        vehicleType: state.vehicleType,
+        hoursPerDay: state.hoursPerDay,
+        daysPerWeek: state.daysPerWeek,
+        drivePeakHours: state.drivePeakHours
+      });
+
+      const cityName = (CONFIG.CITIES[state.cityKey] && CONFIG.CITIES[state.cityKey].name) || state.cityKey;
+      const vehicleName = (CONFIG.VEHICLE_TYPES[state.vehicleType] && CONFIG.VEHICLE_TYPES[state.vehicleType].name) || state.vehicleType;
+      const licenseDesc = state.licenseStatus === 'valid'
+        ? "Yes (Valid driver's license)"
+        : (state.licenseStatus === 'renewing' ? 'In progress / Currently renewing' : 'No (Does not have license yet)');
+
+      const leadName = state.driverName || 'Prospective Driver';
+      const leadPhone = state.driverPhone || 'Not provided';
+      const netMonthly = calculator.formatCurrency(calcResults.inDriveNetMonthly, calcResults.currency);
+      const extraSaved = calculator.formatCurrency(calcResults.extraMoneyKept, calcResults.currency);
+      const grossMonthly = calculator.formatCurrency(calcResults.monthlyGross, calcResults.currency);
+
+      // If user has set an optional Web3Forms key, send via Web3Forms API
+      if (accessKey && accessKey !== 'YOUR_ACCESS_KEY_HERE') {
+        const payload = {
+          access_key: accessKey,
+          subject: `🚗 New inDrive Lead: ${leadName} (${leadPhone}) - ${cityName}`,
+          from_name: 'inDrive Driver Funnel',
+          "Driver Name": leadName,
+          "Phone / WhatsApp Number": leadPhone,
+          "City": cityName,
+          "Vehicle Category": vehicleName,
+          "Driver License Status": licenseDesc,
+          "Work Commitment": state.workCommitment === 'fulltime' ? 'Full-Time Driver' : 'Part-Time Driver',
+          "Driving Hours": `${state.hoursPerDay} hrs/day, ${state.daysPerWeek} days/week`,
+          "Peak Hours Driving": state.drivePeakHours ? 'Yes' : 'No',
+          "Estimated Gross Monthly Earnings": grossMonthly,
+          "Estimated Net Monthly Take-Home": `${netMonthly} / month`,
+          "Extra Money Kept vs Competitors": `${extraSaved} / month`,
+          "Applied Referral Link": state.customTargetUrl || CONFIG.REFERRAL_LINK,
+          "Submission Date": new Date().toLocaleString()
+        };
+
+        const response = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+        console.log('inDrive Lead submitted via Web3Forms:', data);
+        return { success: true, provider: 'web3forms', data };
+      }
+
+      // Default Direct Mailer to ugoodagu@gmail.com
+      if (recipientEmail) {
+        const payload = {
+          _subject: `🚗 New inDrive Lead: ${leadName} (${leadPhone}) - ${cityName}`,
+          _template: 'table',
+          _captcha: 'false',
+          "Driver Name": leadName,
+          "Phone / WhatsApp Number": leadPhone,
+          "City": cityName,
+          "Vehicle Category": vehicleName,
+          "Driver License Status": licenseDesc,
+          "Work Commitment": state.workCommitment === 'fulltime' ? 'Full-Time Driver' : 'Part-Time Driver',
+          "Driving Hours": `${state.hoursPerDay} hrs/day, ${state.daysPerWeek} days/week`,
+          "Peak Hours Driving": state.drivePeakHours ? 'Yes' : 'No',
+          "Estimated Gross Monthly Earnings": grossMonthly,
+          "Estimated Net Monthly Take-Home": `${netMonthly} / month`,
+          "Extra Money Kept vs Competitors": `${extraSaved} / month`,
+          "Applied Referral Link": state.customTargetUrl || CONFIG.REFERRAL_LINK,
+          "Submission Date": new Date().toLocaleString()
+        };
+
+        const response = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(recipientEmail)}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+        console.log('inDrive Lead delivered to ' + recipientEmail + ' via FormSubmit:', data);
+        return { success: true, provider: 'formsubmit', data };
+      }
+
+      return { success: false, reason: 'no_recipient' };
+    } catch (err) {
+      console.error('Failed to dispatch lead notification:', err);
+      return { success: false, error: err };
+    }
   }
 
   // Toast

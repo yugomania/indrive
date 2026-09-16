@@ -467,6 +467,9 @@
           <div class="input-group">
             <label class="input-label" for="driverPhoneInput">Phone / WhatsApp Number (Optional)</label>
             <input type="tel" id="driverPhoneInput" class="text-input" placeholder="e.g. +234 801 234 5678">
+            <small style="color: var(--text-muted); font-size: 0.78rem; margin-top: 6px; display: block;">
+              🔒 We only use your contact to assist with onboarding and your fuel bonus.
+            </small>
           </div>
         </div>
 
@@ -508,32 +511,37 @@
 
         <!-- THE "TRY IT" PRIMARY CTA (Directly linked to referral) -->
         <div style="margin: 26px 0 16px;">
-          <a href="https://indriver.onelink.me/X6vF/rzajnuar" class="btn-try-it" id="primaryTryItBtn" target="_blank" rel="noopener noreferrer">
-            🚀 TRY IT — DOWNLOAD APP & EARN
+          <a href="https://indriver.onelink.me/X6vF/rzajnuar" target="_blank" rel="noopener" class="btn-try-it" id="primaryTryItBtn">
+            <span>🚀 Try It - Download inDrive App</span>
           </a>
         </div>
 
-        <!-- Store Badges Grid -->
+        <p style="text-align: center; font-size: 0.82rem; color: var(--text-muted); margin-bottom: 20px;">
+          No registration fee. Keep 90%+ of what you make. Start receiving ride requests today.
+        </p>
+
+        <!-- App Store Quick Badges -->
         <div class="store-badges-grid">
-          <a href="https://indriver.onelink.me/X6vF/rzajnuar" class="store-download-btn" id="playStoreBtn" target="_blank" rel="noopener noreferrer">
-            <span class="store-icon">🤖</span>
+          <a href="https://indriver.onelink.me/X6vF/rzajnuar" target="_blank" rel="noopener" class="store-download-btn" id="playStoreBtn">
+            <span style="font-size: 1.5rem;">🤖</span>
             <div>
-              <div class="store-text-sub">Get it on</div>
-              <div class="store-text-main">Google Play</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted);">GET IT ON</div>
+              <div style="font-weight: 700; font-size: 0.9rem;">Google Play</div>
             </div>
           </a>
-          <a href="https://indriver.onelink.me/X6vF/rzajnuar" class="store-download-btn" id="appStoreBtn" target="_blank" rel="noopener noreferrer">
-            <span class="store-icon">🍎</span>
+          <a href="https://indriver.onelink.me/X6vF/rzajnuar" target="_blank" rel="noopener" class="store-download-btn" id="appStoreBtn">
+            <span style="font-size: 1.5rem;">🍎</span>
             <div>
-              <div class="store-text-sub">Download on</div>
-              <div class="store-text-main">App Store</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted);">Download on the</div>
+              <div style="font-weight: 700; font-size: 0.9rem;">App Store</div>
             </div>
           </a>
         </div>
 
-        <div style="text-align: center; margin-top: 20px;">
-          <button type="button" class="btn btn-secondary" id="recalculateBtn" style="font-size: 0.88rem; padding: 10px 20px;">
-            🔄 Recalculate with different hours
+        <!-- Secondary Actions -->
+        <div style="margin-top: 24px; text-align: center; display: flex; justify-content: center; gap: 14px;">
+          <button type="button" class="btn btn-secondary" id="recalculateBtn" style="font-size: 0.88rem; padding: 10px 18px;">
+            ↺ Recalculate Numbers
           </button>
         </div>
       </section>
@@ -543,9 +551,9 @@
     <!-- Footer -->
     <footer class="app-footer">
       <div class="footer-links">
-        <a href="#rules" id="howItWorksLink">How Calculations Work</a>
+        <a href="#terms" id="termsLink">Terms & Bonus Policy</a>
         <span>•</span>
-        <a href="#referral" id="footerReferralLink">Referral Program</a>
+        <a href="#privacy" id="privacyLink">Privacy Notice</a>
         <span>•</span>
         <a href="#support" id="supportLink">Support</a>
       </div>
@@ -558,11 +566,11 @@
   <div class="modal-overlay" id="configModal">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 class="modal-title">⚙️ Referral Configuration</h3>
+        <h3 class="modal-title">⚙️ Settings & Lead Alerts</h3>
         <button type="button" class="btn-close-modal" id="closeConfigBtn">&times;</button>
       </div>
       <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">
-        Configure the referral code and destination links that power the <strong>"Try It"</strong> download buttons.
+        Configure your referral links and email notifications to receive new driver leads directly in your inbox.
       </p>
 
       <div class="input-group">
@@ -578,9 +586,25 @@
         <input type="url" id="customTargetUrlInput" class="text-input" placeholder="https://driver.indrive.com/register?ref=">
       </div>
 
+      <div class="input-group">
+        <label class="input-label" for="customEmailInput">Lead Notification Email</label>
+        <input type="email" id="customEmailInput" class="text-input" placeholder="ugoodagu@gmail.com" value="ugoodagu@gmail.com">
+        <small style="color: var(--text-muted); font-size: 0.75rem; margin-top: 4px; display: block;">
+          Driver names, phone numbers, and calculated earnings will be delivered directly to this email.
+        </small>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label" for="customAccessKeyInput">Web3Forms Access Key (Optional Alternative)</label>
+        <input type="text" id="customAccessKeyInput" class="text-input" placeholder="e.g. 12345678-abcd-ef01-2345-6789abcdef01">
+        <small style="color: var(--text-muted); font-size: 0.75rem; margin-top: 4px; display: block;">
+          Optional: If you have a Web3Forms key from <a href="https://web3forms.com" target="_blank" rel="noopener" style="color: var(--lime-accent); font-weight: 700; text-decoration: underline;">web3forms.com</a>, you can enter it here.
+        </small>
+      </div>
+
       <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
         <button type="button" class="btn btn-secondary" id="cancelConfigBtn">Cancel</button>
-        <button type="button" class="btn btn-primary" id="saveConfigBtn" style="padding: 12px 20px;">Save Referral Link</button>
+        <button type="button" class="btn btn-primary" id="saveConfigBtn" style="padding: 12px 20px;">Save Settings</button>
       </div>
     </div>
   </div>
