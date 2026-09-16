@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>inDrive Nigeria Driver Earnings Calculator | Lagos & Abuja</title>
+  <meta name="description" content="Calculate your potential monthly earnings as an inDrive driver in Lagos and Abuja. Keep up to 90%+ of your fares and unlock ₦20,000 fuel support on 50 rides.">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2225%22 fill=%22%23B4F82C%22/><text y=%2265%22 x=%2250%22 text-anchor=%22middle%22 font-size=%2260%22 font-weight=%22900%22 fill=%22%230A0D10%22 font-family=%22sans-serif%22>iD</text></svg>">
+  
+  <!-- Design System CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="app-container">
+
+    <!-- Header -->
+    <header class="app-header">
+      <a href="#" class="brand-badge" id="brandResetBtn" title="inDrive Earnings">
+        <span class="brand-logo-pill">inDrive</span>
+        <span class="brand-subtext">Driver Calculator</span>
+      </a>
+
+      <div class="header-actions">
+        <div class="badge-tag" id="headerCityTag">
+          <span class="pulse-dot"></span>
+          <span id="activeCityLabel">Lagos</span>
+        </div>
+        <button type="button" class="btn-icon-config" id="openConfigBtn" title="Referral Settings" aria-label="Referral Settings">
+          ⚙️
+        </button>
+      </div>
+    </header>
+
+    <!-- Wizard Progress Tracker (Hidden on welcome screen) -->
+    <div class="wizard-progress-bar-wrap" id="progressWrap" style="display: none;">
+      <div class="progress-info">
+        <span class="progress-step-counter" id="stepCounterText">Step 1 of 5</span>
+        <span id="stepCategoryText">Work Commitment</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressBarFill" style="width: 20%;"></div>
+      </div>
+    </div>
+
+    <!-- MAIN FORM / WIZARD CONTAINER -->
+    <main id="wizardForm">
+
+      <!-- ================= STEP 0: WELCOME & CITY SELECTION ================= -->
+      <section class="wizard-card active" id="step-0">
+        <div class="step-header">
+          <span class="step-eyebrow">Driver Income Estimator</span>
+          <h1 class="step-title">How much can you make with inDrive?</h1>
+          <p class="step-description">
+            Answer a few quick questions to estimate your monthly take-home earnings. You set your own fares and keep up to 90%+ of what you earn.
+          </p>
+        </div>
+
+        <!-- Limited Time Onboarding Urgency Banner -->
+        <div class="bonus-urgency-banner">
+          <div class="bonus-urgency-left">
+            <span class="bonus-badge-icon">⛽</span>
+            <div>
+              <div class="bonus-urgency-title">₦20,000 Fuel Support Bonus Active!</div>
+              <div class="bonus-urgency-sub">Complete 50 rides & get ₦20,000 free fuel support with code <strong>rzajnuar</strong></div>
+            </div>
+          </div>
+          <div class="countdown-box">
+            <div class="countdown-unit">
+              <div class="countdown-num" id="countdownHours">23</div>
+              <div class="countdown-lbl">Hrs</div>
+            </div>
+            <div class="countdown-unit">
+              <div class="countdown-num" id="countdownMins">48</div>
+              <div class="countdown-lbl">Min</div>
+            </div>
+            <div class="countdown-unit">
+              <div class="countdown-num" id="countdownSecs">15</div>
+              <div class="countdown-lbl">Sec</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" for="citySelect">Select Your Driving City (Nigeria)</label>
+          <select id="citySelect" class="custom-select">
+            <option value="lagos" selected>🇳🇬 Lagos (₦ NGN)</option>
+            <option value="abuja">🇳🇬 Abuja (₦ NGN)</option>
+          </select>
+        </div>
+
+        <!-- 3 Perks Strip -->
+        <div class="perks-strip">
+          <div class="perk-pill">
+            <div class="perk-pill-icon">⛽</div>
+            <div class="perk-pill-label">₦20k Fuel Support</div>
+          </div>
+          <div class="perk-pill">
+            <div class="perk-pill-icon">💰</div>
+            <div class="perk-pill-label">Keep 90.5%+</div>
+          </div>
+          <div class="perk-pill">
+            <div class="perk-pill-icon">⚡</div>
+            <div class="perk-pill-label">Daily Payouts</div>
+          </div>
+        </div>
+
+        <div class="options-grid two-cols" style="margin-top: 20px; margin-bottom: 24px;">
+          <div style="background: var(--bg-surface); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+            <div style="font-size: 1.3rem; margin-bottom: 6px;">⚡</div>
+            <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 4px;">Ultra-Low 9.5% Fee</div>
+            <div style="font-size: 0.8rem; color: var(--text-secondary);">Keep up to 15% more profit compared to competitors.</div>
+          </div>
+          <div style="background: var(--bg-surface); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+            <div style="font-size: 1.3rem; margin-bottom: 6px;">🤝</div>
+            <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 4px;">Set Your Own Prices</div>
+            <div style="font-size: 0.8rem; color: var(--text-secondary);">Negotiate fares directly with passengers before accepting.</div>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-primary" id="startWizardBtn" style="width: 100%;">
+          Calculate My Monthly Earnings →
+        </button>
+      </section>
+
+      <!-- ================= STEP 1: WORK COMMITMENT (PART-TIME VS FULL-TIME) ================= -->
+      <section class="wizard-card" id="step-1">
+        <div class="step-header">
+          <span class="step-eyebrow">Work Schedule</span>
+          <h2 class="step-title">Are you driving part-time or full-time?</h2>
+          <p class="step-description">
+            Choose how you want to allocate your time. inDrive allows 100% schedule flexibility.
+          </p>
+        </div>
+
+        <div class="options-grid">
+          <!-- Full-Time Option -->
+          <label class="choice-card selected" data-radio="commitment" data-value="fulltime">
+            <input type="radio" name="workCommitment" value="fulltime" checked>
+            <div class="choice-icon-bubble">💼</div>
+            <div class="choice-content">
+              <div class="choice-title">
+                <span>Full-Time Driving</span>
+                <span class="choice-badge">Highest Income</span>
+              </div>
+              <p class="choice-subtitle">
+                Your primary source of revenue. Dedicated daily shifts with maximum earning potential and bonus multipliers.
+              </p>
+            </div>
+          </label>
+
+          <!-- Part-Time Option -->
+          <label class="choice-card" data-radio="commitment" data-value="parttime">
+            <input type="radio" name="workCommitment" value="parttime">
+            <div class="choice-icon-bubble">⏱️</div>
+            <div class="choice-content">
+              <div class="choice-title">
+                <span>Part-Time / Side Hustle</span>
+                <span class="choice-badge">Flexible Hours</span>
+              </div>
+              <p class="choice-subtitle">
+                Drive evenings, weekends, or free hours around another job or studies. Boost your disposable cash anytime.
+              </p>
+            </div>
+          </label>
+        </div>
+
+        <div class="wizard-actions">
+          <button type="button" class="btn btn-secondary prev-step-btn">← Back</button>
+          <button type="button" class="btn btn-primary next-step-btn">Continue →</button>
+        </div>
+      </section>
+
+      <!-- ================= STEP 2: VEHICLE CATEGORY ================= -->
+      <section class="wizard-card" id="step-2">
+        <div class="step-header">
+          <span class="step-eyebrow">Vehicle Category</span>
+          <h2 class="step-title">What vehicle will you be driving?</h2>
+          <p class="step-description">
+            Trip fares and earnings vary depending on your vehicle model and ride class.
+          </p>
+        </div>
+
+        <div class="options-grid two-cols">
+          <label class="choice-card selected" data-radio="vehicle" data-value="sedan">
+            <input type="radio" name="vehicleType" value="sedan" checked>
+            <div class="choice-icon-bubble">🚗</div>
+            <div class="choice-content">
+              <div class="choice-title">Standard Sedan</div>
+              <p class="choice-subtitle">Compact car, hatchback, or sedan (Highest volume of ride requests)</p>
+            </div>
+          </label>
+
+          <label class="choice-card" data-radio="vehicle" data-value="comfort">
+            <input type="radio" name="vehicleType" value="comfort">
+            <div class="choice-icon-bubble">✨</div>
+            <div class="choice-content">
+              <div class="choice-title">Comfort / SUV</div>
+              <p class="choice-subtitle">Spacious, air-conditioned premium rides with 25% higher fares</p>
+            </div>
+          </label>
+
+          <label class="choice-card" data-radio="vehicle" data-value="moto">
+            <input type="radio" name="vehicleType" value="moto">
+            <div class="choice-icon-bubble">🛵</div>
+            <div class="choice-content">
+              <div class="choice-title">Motorcycle / Boda</div>
+              <p class="choice-subtitle">Express passenger trips & swift city delivery parcels</p>
+            </div>
+          </label>
+
+          <label class="choice-card" data-radio="vehicle" data-value="delivery">
+            <input type="radio" name="vehicleType" value="delivery">
+            <div class="choice-icon-bubble">📦</div>
+            <div class="choice-content">
+              <div class="choice-title">Cargo / Courier</div>
+              <p class="choice-subtitle">Light delivery vans or trucks for intercity freight</p>
+            </div>
+          </label>
+        </div>
+
+        <div class="wizard-actions">
+          <button type="button" class="btn btn-secondary prev-step-btn">← Back</button>
+          <button type="button" class="btn btn-primary next-step-btn">Continue →</button>
+        </div>
+      </section>
+
+      <!-- ================= STEP 3: TIME ALLOCATED (HOURS & DAYS) ================= -->
+      <section class="wizard-card" id="step-3">
+        <div class="step-header">
+          <span class="step-eyebrow">Time Allocation</span>
+          <h2 class="step-title">How much time will you allocate?</h2>
+          <p class="step-description">
+            Adjust your expected driving hours per day and days per week.
+          </p>
+        </div>
+
+        <!-- Hours per Day Slider -->
+        <div class="slider-container">
+          <div class="slider-header">
+            <span class="slider-label">
+              <span>🕒</span> Hours you plan to drive per day
+            </span>
+            <span class="slider-value-badge" id="hoursPerDayDisplay">8 hrs / day</span>
+          </div>
+          <input type="range" id="hoursPerDayInput" class="range-slider" min="2" max="14" step="1" value="8">
+          <div class="slider-scale">
+            <span>2 hrs</span>
+            <span>6 hrs</span>
+            <span>10 hrs</span>
+            <span>14 hrs</span>
+          </div>
+        </div>
+
+        <!-- Days per Week Slider -->
+        <div class="slider-container">
+          <div class="slider-header">
+            <span class="slider-label">
+              <span>📅</span> Days you plan to drive per week
+            </span>
+            <span class="slider-value-badge" id="daysPerWeekDisplay">5 days / wk</span>
+          </div>
+          <input type="range" id="daysPerWeekInput" class="range-slider" min="1" max="7" step="1" value="5">
+          <div class="slider-scale">
+            <span>1 day</span>
+            <span>3 days</span>
+            <span>5 days</span>
+            <span>7 days</span>
+          </div>
+        </div>
+
+        <!-- Peak Hours Toggle -->
+        <div class="toggle-card" id="peakHoursToggleCard">
+          <div>
+            <div class="toggle-label">⚡ Drive during peak rush hours & weekend nights</div>
+            <div class="toggle-sub">High passenger demand yields up to 20% higher average earnings per trip</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="peakHoursCheckbox" checked>
+            <span class="switch-slider"></span>
+          </label>
+        </div>
+
+        <div class="wizard-actions">
+          <button type="button" class="btn btn-secondary prev-step-btn">← Back</button>
+          <button type="button" class="btn btn-primary next-step-btn" id="calculateResultsBtn">
+            Calculate Earnings →
+          </button>
+        </div>
+      </section>
+
+      <!-- ================= STEP 4: EARNINGS BREAKDOWN DASHBOARD ================= -->
+      <section class="wizard-card" id="step-4">
+        <div class="step-header">
+          <span class="step-eyebrow">Earnings Breakdown</span>
+          <h2 class="step-title">Your Estimated Monthly Earnings</h2>
+          <p class="step-description">
+            Based on <strong id="summaryHoursTag">40 hrs/week</strong> in <span id="summaryCityTag">Lagos</span>.
+          </p>
+        </div>
+
+        <!-- Main Big Earnings Callout -->
+        <div class="earnings-highlight-box">
+          <div class="earnings-top-tag">
+            <span>★</span> Estimated Net Monthly Take-Home
+          </div>
+          <div class="big-earnings-number" id="netMonthlyEarningsDisplay">
+            ₦0
+          </div>
+          <div class="earnings-cadence">
+            Clean take-home after fuel, maintenance & low inDrive fee
+          </div>
+
+          <div class="earnings-metrics-row">
+            <div class="metric-cell">
+              <div class="metric-cell-label">Weekly Net</div>
+              <div class="metric-cell-value" id="netWeeklyEarningsDisplay">₦0</div>
+            </div>
+            <div class="metric-cell">
+              <div class="metric-cell-label">Monthly Gross</div>
+              <div class="metric-cell-value" id="grossMonthlyEarningsDisplay">₦0</div>
+            </div>
+          </div>
+
+          <div style="background: rgba(180, 248, 44, 0.12); border: 1px solid rgba(180, 248, 44, 0.4); border-radius: var(--radius-md); padding: 10px 14px; margin-top: 14px; display: flex; align-items: center; gap: 10px; text-align: left;">
+            <span style="font-size: 1.3rem;">⛽</span>
+            <div>
+              <div style="font-weight: 800; font-size: 0.85rem; color: var(--lime-primary);">+₦20,000 Fuel Support Bonus</div>
+              <div style="font-size: 0.76rem; color: #94A3B8;">Earn ₦20,000 free fuel payout when you complete your first 50 rides!</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- inDrive vs Competitor Comparison Bar -->
+        <div class="comparison-container">
+          <div class="comparison-header">
+            <span class="comparison-title">
+              <span>⚖️</span> inDrive vs Other Platforms
+            </span>
+            <span class="comparison-badge" id="extraKeptBadge">+₦0 Extra</span>
+          </div>
+
+          <div class="comparison-row">
+            <div class="comparison-label-row">
+              <span style="color: var(--lime-primary); font-weight: 700;">inDrive (You keep ~90.5%)</span>
+              <span id="indriveFeePercentText">9.5% service fee</span>
+            </div>
+            <div class="comparison-bar-track">
+              <div class="comparison-bar-fill indrive"></div>
+            </div>
+          </div>
+
+          <div class="comparison-row">
+            <div class="comparison-label-row">
+              <span style="color: var(--text-secondary);">Competitors</span>
+              <span>25% commission</span>
+            </div>
+            <div class="comparison-bar-track">
+              <div class="comparison-bar-fill competitor"></div>
+            </div>
+          </div>
+
+          <div class="savings-callout" id="savingsCalloutText">
+            You keep approximately <strong id="savingsCalloutAmount">₦0</strong> more in your pocket each month simply because of inDrive's low commission rate!
+          </div>
+        </div>
+
+        <!-- Social Proof Drivers -->
+        <div class="social-proof-section">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <span style="font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted);">Verified Driver Reviews</span>
+            <span style="font-size: 0.78rem; color: var(--lime-primary); font-weight: 700;">★ 4.9 / 5 Rating</span>
+          </div>
+          <div class="proof-cards-row">
+            <div class="proof-card">
+              <div class="proof-driver-header">
+                <div class="proof-driver-avatar">🚗</div>
+                <div>
+                  <div class="proof-driver-name">Tunde A.</div>
+                  <div class="proof-driver-city">Lagos • Full-Time</div>
+                </div>
+                <div class="proof-stars">★★★★★</div>
+              </div>
+              <p class="proof-quote">"I switched from competitors 8 months ago. Keeping 90% of what passengers pay has doubled my savings."</p>
+            </div>
+            <div class="proof-card">
+              <div class="proof-driver-header">
+                <div class="proof-driver-avatar">✨</div>
+                <div>
+                  <div class="proof-driver-name">Chinedu E.</div>
+                  <div class="proof-driver-city">Abuja • Part-Time</div>
+                </div>
+                <div class="proof-stars">★★★★★</div>
+              </div>
+              <p class="proof-quote">"Being able to see the passenger's fare before accepting means zero wasted fuel."</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="wizard-actions">
+          <button type="button" class="btn btn-secondary prev-step-btn">← Back</button>
+          <button type="button" class="btn btn-primary next-step-btn">Check Driver Qualification →</button>
+        </div>
+      </section>
+
+      <!-- ================= STEP 5: DRIVER LICENSE & QUALIFICATION (FINAL QUESTION) ================= -->
+      <section class="wizard-card" id="step-5">
+        <div class="step-header">
+          <span class="step-eyebrow">Eligibility Qualification</span>
+          <h2 class="step-title">Do you have a driver's license?</h2>
+          <p class="step-description">
+            Please confirm your licensing status so we can finalize your onboarding route.
+          </p>
+        </div>
+
+        <div class="license-options-wrap">
+          <!-- License Option 1: Yes -->
+          <label class="license-option-card selected" data-radio="license" data-value="valid">
+            <input type="radio" name="licenseStatus" value="valid" checked>
+            <div class="license-radio-circle"></div>
+            <div class="choice-content">
+              <div class="choice-title" style="margin-bottom: 2px;">
+                Yes, I have a valid driver's license
+              </div>
+              <p class="choice-subtitle">
+                Current and unexpired. You are eligible to start driving immediately.
+              </p>
+            </div>
+          </label>
+
+          <!-- License Option 2: In Progress -->
+          <label class="license-option-card" data-radio="license" data-value="renewing">
+            <input type="radio" name="licenseStatus" value="renewing">
+            <div class="license-radio-circle"></div>
+            <div class="choice-content">
+              <div class="choice-title" style="margin-bottom: 2px;">
+                In progress / Currently renewing
+              </div>
+              <p class="choice-subtitle">
+                You can begin your application now and submit documentation when ready.
+              </p>
+            </div>
+          </label>
+
+          <!-- License Option 3: No -->
+          <label class="license-option-card" data-radio="license" data-value="none">
+            <input type="radio" name="licenseStatus" value="none">
+            <div class="license-radio-circle"></div>
+            <div class="choice-content">
+              <div class="choice-title" style="margin-bottom: 2px;">
+                No, I do not have a license yet
+              </div>
+              <p class="choice-subtitle">
+                You can still explore foot delivery, courier roles, or register a vehicle as a fleet owner.
+              </p>
+            </div>
+          </label>
+        </div>
+
+        <div style="margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--border-subtle);">
+          <div class="input-group">
+            <label class="input-label" for="driverNameInput">Your Name (Optional)</label>
+            <input type="text" id="driverNameInput" class="text-input" placeholder="e.g. Alex Adeyemi">
+          </div>
+          <div class="input-group">
+            <label class="input-label" for="driverPhoneInput">Phone / WhatsApp Number (Optional)</label>
+            <input type="tel" id="driverPhoneInput" class="text-input" placeholder="e.g. +234 801 234 5678">
+          </div>
+        </div>
+
+        <div class="wizard-actions">
+          <button type="button" class="btn btn-secondary prev-step-btn">← Back</button>
+          <button type="button" class="btn btn-primary" id="finishAndTryBtn">
+            Finalize & Unlock App Bonus →
+          </button>
+        </div>
+      </section>
+
+      <!-- ================= STEP 6: FINAL SUCCESS & "TRY IT" REFERRAL DOWNLOAD ================= -->
+      <section class="wizard-card" id="step-6">
+        <div class="step-header" style="text-align: center;">
+          <div style="font-size: 2.8rem; margin-bottom: 8px;">🎉</div>
+          <span class="step-eyebrow">Application Ready</span>
+          <h2 class="step-title">Start Driving with inDrive Today!</h2>
+          <p class="step-description">
+            Your estimated monthly earning power: <strong style="color: var(--lime-primary);" id="finalMonthlyAmountTag">₦0/month</strong>.
+          </p>
+        </div>
+
+        <!-- Referral Bonus Coupon Box -->
+        <div class="referral-reward-box">
+          <div class="referral-label">⛽ ₦20,000 Fuel Support Bonus Unlocked!</div>
+          <p class="referral-note" style="margin-bottom: 10px; font-size: 0.92rem; color: #FFFFFF;">
+            Complete your first <strong>50 rides</strong> on inDrive and receive <strong>₦20,000 direct fuel support</strong> credited to your account!
+          </p>
+          <div class="referral-code-display">
+            <span class="referral-code-pill" id="activeReferralCodeText">https://indriver.onelink.me/X6vF/rzajnuar</span>
+            <button type="button" class="btn-copy-code" id="copyReferralBtn">
+              📋 Copy Link
+            </button>
+          </div>
+          <div class="referral-note">
+            Referral link <strong>https://indriver.onelink.me/X6vF/rzajnuar</strong> is automatically applied when you click <strong>Try It</strong> below.
+          </div>
+        </div>
+
+        <!-- THE "TRY IT" PRIMARY CTA (Directly linked to referral) -->
+        <div style="margin: 26px 0 16px;">
+          <a href="https://indriver.onelink.me/X6vF/rzajnuar" class="btn-try-it" id="primaryTryItBtn" target="_blank" rel="noopener noreferrer">
+            🚀 TRY IT — DOWNLOAD APP & EARN
+          </a>
+        </div>
+
+        <!-- Store Badges Grid -->
+        <div class="store-badges-grid">
+          <a href="https://indriver.onelink.me/X6vF/rzajnuar" class="store-download-btn" id="playStoreBtn" target="_blank" rel="noopener noreferrer">
+            <span class="store-icon">🤖</span>
+            <div>
+              <div class="store-text-sub">Get it on</div>
+              <div class="store-text-main">Google Play</div>
+            </div>
+          </a>
+          <a href="https://indriver.onelink.me/X6vF/rzajnuar" class="store-download-btn" id="appStoreBtn" target="_blank" rel="noopener noreferrer">
+            <span class="store-icon">🍎</span>
+            <div>
+              <div class="store-text-sub">Download on</div>
+              <div class="store-text-main">App Store</div>
+            </div>
+          </a>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px;">
+          <button type="button" class="btn btn-secondary" id="recalculateBtn" style="font-size: 0.88rem; padding: 10px 20px;">
+            🔄 Recalculate with different hours
+          </button>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <div class="footer-links">
+        <a href="#rules" id="howItWorksLink">How Calculations Work</a>
+        <span>•</span>
+        <a href="#referral" id="footerReferralLink">Referral Program</a>
+        <span>•</span>
+        <a href="#support" id="supportLink">Support</a>
+      </div>
+      <p>© <span id="currentYear">2026</span> inDrive Driver Onboarding Funnel. All trademarks belong to inDrive.</p>
+    </footer>
+
+  </div>
+
+  <!-- REFERRAL CODE & CONFIGURATION MODAL -->
+  <div class="modal-overlay" id="configModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">⚙️ Referral Configuration</h3>
+        <button type="button" class="btn-close-modal" id="closeConfigBtn">&times;</button>
+      </div>
+      <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">
+        Configure the referral code and destination links that power the <strong>"Try It"</strong> download buttons.
+      </p>
+
+      <div class="input-group">
+        <label class="input-label" for="customReferralCodeInput">Your inDrive Referral Code</label>
+        <input type="text" id="customReferralCodeInput" class="text-input" placeholder="e.g. MY_DRIVER_CODE_123">
+        <small style="color: var(--text-muted); font-size: 0.75rem; margin-top: 4px; display: block;">
+          Tip: You can also share this site with <code>?ref=YOURCODE</code> in the link!
+        </small>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label" for="customTargetUrlInput">Custom Landing / Deep Link URL (Optional)</label>
+        <input type="url" id="customTargetUrlInput" class="text-input" placeholder="https://driver.indrive.com/register?ref=">
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+        <button type="button" class="btn btn-secondary" id="cancelConfigBtn">Cancel</button>
+        <button type="button" class="btn btn-primary" id="saveConfigBtn" style="padding: 12px 20px;">Save Referral Link</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast-msg" id="toastMsg">Code copied to clipboard!</div>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/calculator.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
