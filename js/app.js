@@ -44,6 +44,8 @@
   const stepCategoryText = document.getElementById('stepCategoryText');
   const headerCityTag = document.getElementById('headerCityTag');
   const activeCityLabel = document.getElementById('activeCityLabel');
+  const headerBackBtn = document.getElementById('headerBackBtn');
+  const brandResetBtn = document.getElementById('brandResetBtn');
 
   const citySelect = document.getElementById('citySelect');
   const startWizardBtn = document.getElementById('startWizardBtn');
@@ -253,6 +255,13 @@
     if (saveConfigBtn) {
       saveConfigBtn.addEventListener('click', saveConfig);
     }
+
+    if (brandResetBtn) {
+      brandResetBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        goToStep(0);
+      });
+    }
   }
 
   // Go to step
@@ -266,6 +275,11 @@
     });
 
     state.currentStep = stepIndex;
+
+    // Header Back button visibility
+    if (headerBackBtn) {
+      headerBackBtn.style.display = stepIndex > 0 ? 'inline-flex' : 'none';
+    }
 
     // Progress Bar handling
     if (stepIndex === 0) {

@@ -179,6 +179,30 @@ body {
   border-color: var(--border-light);
 }
 
+.btn-header-back {
+  display: none;
+  align-items: center;
+  gap: 4px;
+  background: #FFFFFF;
+  border: 1.5px solid var(--border-light);
+  color: var(--text-main);
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  font-size: 0.84rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-fast);
+  text-decoration: none;
+}
+
+.btn-header-back:hover {
+  background: #F1F5F9;
+  border-color: #84CC16;
+  color: var(--text-dark);
+  transform: translateX(-2px);
+}
+
 /* Wizard Progress Bar */
 .wizard-progress-bar-wrap {
   margin-bottom: 24px;

@@ -18,10 +18,15 @@
 
     <!-- Header -->
     <header class="app-header">
-      <a href="#" class="brand-badge" id="brandResetBtn" title="inDrive Earnings">
-        <span class="brand-logo-pill">inDrive</span>
-        <span class="brand-subtext">Driver Calculator</span>
-      </a>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <button type="button" class="btn-header-back prev-step-btn" id="headerBackBtn" title="Go back to previous step" aria-label="Go back" style="display: none;">
+          ← Back
+        </button>
+        <a href="#" class="brand-badge" id="brandResetBtn" title="inDrive Earnings">
+          <span class="brand-logo-pill">inDrive</span>
+          <span class="brand-subtext">Driver Calculator</span>
+        </a>
+      </div>
 
       <div class="header-actions">
         <div class="badge-tag" id="headerCityTag">
@@ -548,7 +553,10 @@
         </div>
 
         <!-- Secondary Actions -->
-        <div style="margin-top: 24px; text-align: center; display: flex; justify-content: center; gap: 14px;">
+        <div style="margin-top: 24px; text-align: center; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+          <button type="button" class="btn btn-secondary prev-step-btn" id="step6BackBtn" style="font-size: 0.88rem; padding: 10px 18px;">
+            ← Back to Details
+          </button>
           <button type="button" class="btn btn-secondary" id="recalculateBtn" style="font-size: 0.88rem; padding: 10px 18px;">
             ↺ Recalculate Numbers
           </button>
