@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>inDrive Nigeria Driver Earnings Calculator | Lagos & Abuja</title>
-  <meta name="description" content="Calculate your potential monthly earnings as an inDrive driver in Lagos and Abuja. Keep up to 90%+ of your fares and unlock ₦20,000 fuel support on 50 rides.">
+  <meta name="description" content="Calculate your potential monthly earnings as an inDrive driver in Lagos and Abuja. Keep up to 86% of your fares and unlock ₦20,000 fuel support on 50 rides.">
   
   <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2225%22 fill=%22%23B4F82C%22/><text y=%2265%22 x=%2250%22 text-anchor=%22middle%22 font-size=%2260%22 font-weight=%22900%22 fill=%22%230A0D10%22 font-family=%22sans-serif%22>iD</text></svg>">
@@ -54,7 +54,7 @@
           <span class="step-eyebrow">Driver Income Estimator</span>
           <h1 class="step-title">How much can you make with inDrive?</h1>
           <p class="step-description">
-            Answer a few quick questions to estimate your monthly take-home earnings. You set your own fares and keep up to 90%+ of what you earn.
+            Answer a few quick questions to estimate your monthly take-home earnings. You set your own fares and keep up to 86% of what you earn.
           </p>
         </div>
 
@@ -68,30 +68,39 @@
             </div>
           </div>
           <div class="countdown-box">
-            <div class="countdown-unit">
-              <div class="countdown-num" id="countdownHours">23</div>
-              <div class="countdown-lbl">Hrs</div>
-            </div>
-            <div class="countdown-unit">
-              <div class="countdown-num" id="countdownMins">48</div>
-              <div class="countdown-lbl">Min</div>
-            </div>
-            <div class="countdown-unit">
-              <div class="countdown-num" id="countdownSecs">15</div>
-              <div class="countdown-lbl">Sec</div>
+            <div class="countdown-digits" id="countdownTimer">14:59</div>
+            <div class="countdown-caption">Bonus lock time</div>
+          </div>
+        </div>
+
+        <!-- Live Driver Social Proof Ticker -->
+        <div class="live-activity-ticker">
+          <div class="ticker-live-dot"></div>
+          <div class="ticker-inner">
+            <div class="ticker-track" id="liveTickerTrack">
+              <!-- Dynamically populated by app.js -->
             </div>
           </div>
         </div>
 
-        <div class="input-group">
-          <label class="input-label" for="citySelect">Select Your Driving City (Nigeria)</label>
-          <select id="citySelect" class="custom-select">
-            <option value="lagos" selected>🇳🇬 Lagos (₦ NGN)</option>
-            <option value="abuja">🇳🇬 Abuja (₦ NGN)</option>
-          </select>
+        <!-- City Dropdown Selector -->
+        <div class="city-selector-card">
+          <label class="city-selector-label" for="citySelect">
+            <span>📍 Select Your Driving City</span>
+            <span class="city-badge-active" id="cityBadgeActive">Active</span>
+          </label>
+          <div class="select-wrapper">
+            <select id="citySelect" class="custom-select">
+              <option value="lagos" selected>Lagos (₦4,200 avg trip)</option>
+              <option value="abuja">Abuja (₦4,500 avg trip)</option>
+            </select>
+          </div>
+          <div class="city-meta-info" id="cityMetaInfo">
+            Low 14% platform service fee in Lagos & Abuja.
+          </div>
         </div>
 
-        <!-- 3 Perks Strip -->
+        <!-- Value Proposition Strip -->
         <div class="perks-strip">
           <div class="perk-pill">
             <div class="perk-pill-icon">⛽</div>
@@ -99,7 +108,7 @@
           </div>
           <div class="perk-pill">
             <div class="perk-pill-icon">💰</div>
-            <div class="perk-pill-label">Keep 90.5%+</div>
+            <div class="perk-pill-label">Keep 86%</div>
           </div>
           <div class="perk-pill">
             <div class="perk-pill-icon">⚡</div>
@@ -110,8 +119,8 @@
         <div class="options-grid two-cols" style="margin-top: 20px; margin-bottom: 24px;">
           <div style="background: var(--bg-surface); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
             <div style="font-size: 1.3rem; margin-bottom: 6px;">⚡</div>
-            <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 4px;">Ultra-Low 9.5% Fee</div>
-            <div style="font-size: 0.8rem; color: var(--text-secondary);">Keep up to 15% more profit compared to competitors.</div>
+            <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 4px;">Ultra-Low 14% Fee</div>
+            <div style="font-size: 0.8rem; color: var(--text-secondary);">Keep up to 11% more profit compared to competitors.</div>
           </div>
           <div style="background: var(--bg-surface); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
             <div style="font-size: 1.3rem; margin-bottom: 6px;">🤝</div>
@@ -344,8 +353,8 @@
 
           <div class="comparison-row">
             <div class="comparison-label-row">
-              <span style="color: var(--lime-primary); font-weight: 700;">inDrive (You keep ~90.5%)</span>
-              <span id="indriveFeePercentText">9.5% service fee</span>
+              <span style="color: var(--lime-primary); font-weight: 700;">inDrive (You keep ~86%)</span>
+              <span id="indriveFeePercentText">14% service fee</span>
             </div>
             <div class="comparison-bar-track">
               <div class="comparison-bar-fill indrive"></div>
@@ -383,7 +392,7 @@
                 </div>
                 <div class="proof-stars">★★★★★</div>
               </div>
-              <p class="proof-quote">"I switched from competitors 8 months ago. Keeping 90% of what passengers pay has doubled my savings."</p>
+              <p class="proof-quote">"I switched from competitors 8 months ago. Keeping 86% of what passengers pay has doubled my savings."</p>
             </div>
             <div class="proof-card">
               <div class="proof-driver-header">
@@ -517,7 +526,7 @@
         </div>
 
         <p style="text-align: center; font-size: 0.82rem; color: var(--text-muted); margin-bottom: 20px;">
-          No registration fee. Keep 90%+ of what you make. Start receiving ride requests today.
+          No registration fee. Keep 86% of what you make. Start receiving ride requests today.
         </p>
 
         <!-- App Store Quick Badges -->

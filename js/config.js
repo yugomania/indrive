@@ -24,7 +24,7 @@ const CONFIG = {
       baseTripFare: 4200,
       avgTripsPerHour: 1.6,
       fuelMaintenanceRatio: 0.22,
-      inDriveCommissionRate: 0.095, // ~9.5% inDrive
+      inDriveCommissionRate: 0.14, // 14% inDrive
       competitorCommissionRate: 0.25 // ~25% Competitors
     },
     'abuja': {
@@ -34,7 +34,7 @@ const CONFIG = {
       baseTripFare: 4500,
       avgTripsPerHour: 1.5,
       fuelMaintenanceRatio: 0.20,
-      inDriveCommissionRate: 0.095,
+      inDriveCommissionRate: 0.14, // 14% inDrive
       competitorCommissionRate: 0.25
     }
   },

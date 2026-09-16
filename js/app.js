@@ -318,6 +318,11 @@
       savingsCalloutAmount.textContent = `${calculator.formatCurrency(results.extraMoneyKept, curr)}`;
     }
 
+    const indriveFeePercentText = document.getElementById('indriveFeePercentText');
+    if (indriveFeePercentText) {
+      indriveFeePercentText.textContent = `${results.inDriveFeePercent}% service fee`;
+    }
+
     // Final Screen Tag
     if (finalMonthlyAmountTag) {
       finalMonthlyAmountTag.textContent = `${calculator.formatCurrency(results.inDriveNetMonthly, curr)} / month`;

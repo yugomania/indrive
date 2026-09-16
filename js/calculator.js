@@ -43,7 +43,7 @@ class EarningsCalculator {
     const hourlyGross = monthlyHours > 0 ? Math.round(monthlyGross / monthlyHours) : 0;
 
     // Commissions
-    const inDriveFee = Math.round(monthlyGross * city.inDriveCommissionRate); // ~9.5%
+    const inDriveFee = Math.round(monthlyGross * city.inDriveCommissionRate); // ~14%
     const competitorFee = Math.round(monthlyGross * city.competitorCommissionRate); // ~25%
     const inDriveFeePercent = Math.round(city.inDriveCommissionRate * 100 * 10) / 10;
     const competitorFeePercent = Math.round(city.competitorCommissionRate * 100);

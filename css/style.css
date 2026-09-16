@@ -705,7 +705,7 @@ body {
 
 .comparison-bar-fill.indrive {
   height: 100%;
-  width: 90.5%;
+  width: 86%;
   background: #84CC16;
   border-radius: var(--radius-full);
 }

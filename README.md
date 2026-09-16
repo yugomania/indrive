@@ -13,7 +13,7 @@ A high-converting, mobile-first driver onboarding questionnaire and earnings cal
    - **Step 3**: Time allocation (Interactive sliders for hours per day & days per week + peak surge toggle).
    - **Step 4**: Dynamic Live Earnings Dashboard:
      - Real-time Net & Gross monthly take-home pay.
-     - inDrive Low Commission (~9.5%) vs. Competitor (25%) savings comparison.
+     - inDrive Low Commission (~14%) vs. Competitor (25%) savings comparison.
      - Verified driver social proof and testimonials.
    - **Step 5**: **Driver's License Qualification** (*"Do you have a driver's license?"* with Yes / Renewing / No options + contact details).
    - **Step 6**: Final Onboarding & **"TRY IT"** button linked directly to your referral code.
