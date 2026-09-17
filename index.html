@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>inDrive Nigeria Driver Earnings Calculator | Lagos & Abuja</title>
-  <meta name="description" content="Calculate your potential monthly earnings as an inDrive driver in Lagos and Abuja. Keep up to 86% of your fares and unlock ₦20,000 fuel support on 50 rides.">
+  <meta name="description" content="Calculate your potential monthly earnings as an inDrive driver in Lagos and Abuja. Keep up to 86.4% of your fares and unlock ₦20,000 fuel support on 50 rides.">
   
   <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2225%22 fill=%22%23B4F82C%22/><text y=%2265%22 x=%2250%22 text-anchor=%22middle%22 font-size=%2260%22 font-weight=%22900%22 fill=%22%230A0D10%22 font-family=%22sans-serif%22>iD</text></svg>">
@@ -59,7 +59,7 @@
           <span class="step-eyebrow">Driver Income Estimator</span>
           <h1 class="step-title">How much can you make with inDrive?</h1>
           <p class="step-description">
-            Answer a few quick questions to estimate your monthly take-home earnings. You set your own fares and keep up to 86% of what you earn.
+            Answer a few quick questions to estimate your monthly take-home earnings. You set your own fares and keep up to 86.4% of what you earn.
           </p>
         </div>
 
@@ -101,7 +101,7 @@
             </select>
           </div>
           <div class="city-meta-info" id="cityMetaInfo">
-            Low 14% platform service fee in Lagos & Abuja.
+            Low 13.6% platform service fee in Lagos & Abuja.
           </div>
         </div>
 
@@ -113,7 +113,7 @@
           </div>
           <div class="perk-pill">
             <div class="perk-pill-icon">💰</div>
-            <div class="perk-pill-label">Keep 86%</div>
+            <div class="perk-pill-label">Keep 86.4%</div>
           </div>
           <div class="perk-pill">
             <div class="perk-pill-icon">⚡</div>
@@ -124,8 +124,8 @@
         <div class="options-grid two-cols" style="margin-top: 20px; margin-bottom: 24px;">
           <div style="background: var(--bg-surface); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
             <div style="font-size: 1.3rem; margin-bottom: 6px;">⚡</div>
-            <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 4px;">Ultra-Low 14% Fee</div>
-            <div style="font-size: 0.8rem; color: var(--text-secondary);">Keep up to 11% more profit compared to competitors.</div>
+            <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 4px;">Ultra-Low 13.6% Fee</div>
+            <div style="font-size: 0.8rem; color: var(--text-secondary);">Keep up to 11.4% more profit compared to competitors.</div>
           </div>
           <div style="background: var(--bg-surface); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
             <div style="font-size: 1.3rem; margin-bottom: 6px;">🤝</div>
@@ -323,8 +323,8 @@
           <div class="big-earnings-number" id="netMonthlyEarningsDisplay">
             ₦0
           </div>
-          <div class="earnings-cadence">
-            Clean take-home after fuel, maintenance & low inDrive fee
+          <div class="earnings-cadence" id="earningsCadenceText">
+            Clean take-home after fuel (calculated at ₦1,400/L), maintenance & low 13.6% inDrive fee
           </div>
 
           <div class="earnings-metrics-row">
@@ -338,11 +338,33 @@
             </div>
           </div>
 
+          <!-- Real-world Fuel & Operating Expenses Breakdown based on ₦1,400/L fuel -->
+          <div class="fuel-expense-breakdown-card">
+            <div class="fuel-breakdown-header">
+              <span class="fuel-badge">⛽ Petrol Factored in at ₦1,400/L</span>
+              <span class="fuel-liters-tag" id="monthlyFuelLitersTag">~337 Litres / mo</span>
+            </div>
+            <div class="fuel-breakdown-grid">
+              <div class="fuel-breakdown-item">
+                <span class="fuel-breakdown-lbl">Monthly Fuel (₦1,400/L)</span>
+                <span class="fuel-breakdown-val" id="monthlyFuelCostDisplay">-₦0</span>
+              </div>
+              <div class="fuel-breakdown-item">
+                <span class="fuel-breakdown-lbl">Maintenance & Data</span>
+                <span class="fuel-breakdown-val" id="monthlyMaintenanceDisplay">-₦0</span>
+              </div>
+              <div class="fuel-breakdown-item">
+                <span class="fuel-breakdown-lbl">inDrive Fee (13.6%)</span>
+                <span class="fuel-breakdown-val" id="indriveFeeDisplay">-₦0</span>
+              </div>
+            </div>
+          </div>
+
           <div style="background: rgba(180, 248, 44, 0.12); border: 1px solid rgba(180, 248, 44, 0.4); border-radius: var(--radius-md); padding: 10px 14px; margin-top: 14px; display: flex; align-items: center; gap: 10px; text-align: left;">
             <span style="font-size: 1.3rem;">⛽</span>
             <div>
               <div style="font-weight: 800; font-size: 0.85rem; color: var(--lime-primary);">+₦20,000 Fuel Support Bonus</div>
-              <div style="font-size: 0.76rem; color: #94A3B8;">Earn ₦20,000 free fuel payout when you complete your first 50 rides!</div>
+              <div style="font-size: 0.76rem; color: #94A3B8;">Earn ₦20,000 free fuel payout (<span id="fuelBonusLitersText">~14.3 Litres</span> at ₦1,400/L) when you complete your first 50 rides!</div>
             </div>
           </div>
         </div>
@@ -358,8 +380,8 @@
 
           <div class="comparison-row">
             <div class="comparison-label-row">
-              <span style="color: var(--lime-primary); font-weight: 700;">inDrive (You keep ~86%)</span>
-              <span id="indriveFeePercentText">14% service fee</span>
+              <span style="color: var(--lime-primary); font-weight: 700;">inDrive (You keep ~86.4%)</span>
+              <span id="indriveFeePercentText">13.6% service fee</span>
             </div>
             <div class="comparison-bar-track">
               <div class="comparison-bar-fill indrive"></div>
@@ -397,7 +419,7 @@
                 </div>
                 <div class="proof-stars">★★★★★</div>
               </div>
-              <p class="proof-quote">"I switched from competitors 8 months ago. Keeping 86% of what passengers pay has doubled my savings."</p>
+              <p class="proof-quote">"I switched from competitors 8 months ago. Keeping 86.4% of what passengers pay has doubled my savings."</p>
             </div>
             <div class="proof-card">
               <div class="proof-driver-header">
@@ -531,7 +553,7 @@
         </div>
 
         <p style="text-align: center; font-size: 0.82rem; color: var(--text-muted); margin-bottom: 20px;">
-          No registration fee. Keep 86% of what you make. Start receiving ride requests today.
+          No registration fee. Keep 86.4% of what you make. Start receiving ride requests today.
         </p>
 
         <!-- App Store Quick Badges -->
