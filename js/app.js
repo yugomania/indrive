@@ -13,6 +13,7 @@
     cityKey: 'lagos',
     workCommitment: 'fulltime',
     vehicleType: 'sedan',
+    tripsPerDay: 12,
     hoursPerDay: 8,
     daysPerWeek: 5,
     drivePeakHours: true,
@@ -49,6 +50,8 @@
 
   const citySelect = document.getElementById('citySelect');
   const startWizardBtn = document.getElementById('startWizardBtn');
+  const tripsPerDayInput = document.getElementById('tripsPerDayInput');
+  const tripsPerDayDisplay = document.getElementById('tripsPerDayDisplay');
   const hoursPerDayInput = document.getElementById('hoursPerDayInput');
   const hoursPerDayDisplay = document.getElementById('hoursPerDayDisplay');
   const daysPerWeekInput = document.getElementById('daysPerWeekInput');
@@ -57,6 +60,10 @@
   const peakHoursToggleCard = document.getElementById('peakHoursToggleCard');
 
   // Result displays
+  const netDailyEarningsDisplay = document.getElementById('netDailyEarningsDisplay');
+  const dailyTripsSubText = document.getElementById('dailyTripsSubText');
+  const weeklyTripsSubText = document.getElementById('weeklyTripsSubText');
+  const monthlyTripsSubText = document.getElementById('monthlyTripsSubText');
   const netMonthlyEarningsDisplay = document.getElementById('netMonthlyEarningsDisplay');
   const netWeeklyEarningsDisplay = document.getElementById('netWeeklyEarningsDisplay');
   const grossMonthlyEarningsDisplay = document.getElementById('grossMonthlyEarningsDisplay');
@@ -162,6 +169,16 @@
     });
 
     // Range Sliders
+    if (tripsPerDayInput) {
+      tripsPerDayInput.addEventListener('input', (e) => {
+        state.tripsPerDay = Number(e.target.value);
+        if (tripsPerDayDisplay) {
+          tripsPerDayDisplay.textContent = `${state.tripsPerDay} trips / day`;
+        }
+        recomputeAndRender();
+      });
+    }
+
     if (hoursPerDayInput) {
       hoursPerDayInput.addEventListener('input', (e) => {
         state.hoursPerDay = Number(e.target.value);
@@ -308,6 +325,7 @@
       cityKey: state.cityKey,
       workCommitment: state.workCommitment,
       vehicleType: state.vehicleType,
+      tripsPerDay: state.tripsPerDay,
       hoursPerDay: state.hoursPerDay,
       daysPerWeek: state.daysPerWeek,
       drivePeakHours: state.drivePeakHours
@@ -319,14 +337,26 @@
     if (netMonthlyEarningsDisplay) {
       netMonthlyEarningsDisplay.textContent = calculator.formatCurrency(results.inDriveNetMonthly, curr);
     }
+    if (netDailyEarningsDisplay) {
+      netDailyEarningsDisplay.textContent = calculator.formatCurrency(results.inDriveNetDaily, curr);
+    }
     if (netWeeklyEarningsDisplay) {
       netWeeklyEarningsDisplay.textContent = calculator.formatCurrency(results.inDriveNetWeekly, curr);
     }
     if (grossMonthlyEarningsDisplay) {
       grossMonthlyEarningsDisplay.textContent = calculator.formatCurrency(results.monthlyGross, curr);
     }
+    if (dailyTripsSubText) {
+      dailyTripsSubText.textContent = `${results.dailyTrips} trips / day`;
+    }
+    if (weeklyTripsSubText) {
+      weeklyTripsSubText.textContent = `${results.totalTripsPerWeek} trips / wk`;
+    }
+    if (monthlyTripsSubText) {
+      monthlyTripsSubText.textContent = `${results.totalTripsPerMonth} trips / mo`;
+    }
     if (summaryHoursTag) {
-      summaryHoursTag.textContent = `${results.weeklyHours} hrs/week (${results.monthlyHours} hrs/month)`;
+      summaryHoursTag.textContent = `${results.dailyTrips} trips/day (${results.totalTripsPerWeek} trips/wk • ${results.weeklyHours} hrs)`;
     }
     if (summaryCityTag) {
       summaryCityTag.textContent = results.city.name.split(',')[0];
@@ -481,9 +511,10 @@
           "Vehicle Category": vehicleName,
           "Driver License Status": licenseDesc,
           "Work Commitment": state.workCommitment === 'fulltime' ? 'Full-Time Driver' : 'Part-Time Driver',
-          "Driving Hours": `${state.hoursPerDay} hrs/day, ${state.daysPerWeek} days/week`,
+          "Driving Schedule": `${state.tripsPerDay} trips/day, ${state.hoursPerDay} hrs/day, ${state.daysPerWeek} days/week`,
           "Peak Hours Driving": state.drivePeakHours ? 'Yes' : 'No',
           "Estimated Gross Monthly Earnings": grossMonthly,
+          "Estimated Daily Net Take-Home": `${calculator.formatCurrency(calcResults.inDriveNetDaily, calcResults.currency)} / day`,
           "Monthly Fuel Cost (₦1,400/L)": monthlyFuelExpense,
           "Monthly Maintenance & Data": monthlyMaintenance,
           "inDrive Platform Fee (13.6%)": inDriveFee,
@@ -519,9 +550,10 @@
           "Vehicle Category": vehicleName,
           "Driver License Status": licenseDesc,
           "Work Commitment": state.workCommitment === 'fulltime' ? 'Full-Time Driver' : 'Part-Time Driver',
-          "Driving Hours": `${state.hoursPerDay} hrs/day, ${state.daysPerWeek} days/week`,
+          "Driving Schedule": `${state.tripsPerDay} trips/day, ${state.hoursPerDay} hrs/day, ${state.daysPerWeek} days/week`,
           "Peak Hours Driving": state.drivePeakHours ? 'Yes' : 'No',
           "Estimated Gross Monthly Earnings": grossMonthly,
+          "Estimated Daily Net Take-Home": `${calculator.formatCurrency(calcResults.inDriveNetDaily, calcResults.currency)} / day`,
           "Monthly Fuel Cost (₦1,400/L)": monthlyFuelExpense,
           "Monthly Maintenance & Data": monthlyMaintenance,
           "inDrive Platform Fee (13.6%)": inDriveFee,

@@ -11,6 +11,7 @@ class EarningsCalculator {
     cityKey = 'lagos',
     workCommitment = 'fulltime', // 'parttime' or 'fulltime'
     vehicleType = 'sedan',
+    tripsPerDay = null,
     hoursPerDay = 8,
     daysPerWeek = 5,
     drivePeakHours = true,
@@ -19,7 +20,7 @@ class EarningsCalculator {
     const city = this.config.CITIES[cityKey] || this.config.CITIES['lagos'];
     const vehicle = this.config.VEHICLE_TYPES[vehicleType] || this.config.VEHICLE_TYPES['sedan'];
 
-    // Hours
+    // Hours & Schedule
     const dailyHours = Math.max(1, Math.min(16, Number(hoursPerDay) || 8));
     const weeklyDays = Math.max(1, Math.min(7, Number(daysPerWeek) || 5));
     const weeklyHours = dailyHours * weeklyDays;
@@ -31,9 +32,13 @@ class EarningsCalculator {
     const peakMult = drivePeakHours ? 1.20 : 1.0;
     const commitmentBonus = workCommitment === 'fulltime' ? 1.05 : 1.0; // efficiency gains on full-time
 
-    // Trips
-    const totalTripsPerMonth = Math.round(monthlyHours * city.avgTripsPerHour);
-    const totalTripsPerWeek = Math.round(weeklyHours * city.avgTripsPerHour);
+    // Trips (Use target tripsPerDay if provided, or derive from active hours)
+    const dailyTrips = Number(tripsPerDay) > 0 
+      ? Math.max(1, Math.min(35, Math.round(Number(tripsPerDay))))
+      : Math.max(1, Math.round(dailyHours * city.avgTripsPerHour));
+
+    const totalTripsPerWeek = Math.round(dailyTrips * weeklyDays);
+    const totalTripsPerMonth = Math.round(totalTripsPerWeek * monthlyWeeks);
 
     // Trip fare baseline with city & vehicle
     const avgFarePerTrip = city.baseTripFare * vehicleMult * peakMult * commitmentBonus;
@@ -42,6 +47,8 @@ class EarningsCalculator {
     const monthlyGross = Math.round(totalTripsPerMonth * avgFarePerTrip);
     const weeklyGross = Math.round(monthlyGross / monthlyWeeks);
     const hourlyGross = monthlyHours > 0 ? Math.round(monthlyGross / monthlyHours) : 0;
+    const activeDrivingDays = weeklyDays * monthlyWeeks;
+    const dailyGross = activeDrivingDays > 0 ? Math.round(monthlyGross / activeDrivingDays) : 0;
 
     // Commissions (inDrive official rate is 13.6%, Competitors ~25%)
     const inDriveCommissionRate = city.inDriveCommissionRate !== undefined ? city.inDriveCommissionRate : 0.136;
@@ -81,6 +88,7 @@ class EarningsCalculator {
     const inDriveNetMonthly = Math.max(0, monthlyGross - inDriveFee - operationalExpenses);
     const competitorNetMonthly = Math.max(0, monthlyGross - competitorFee - operationalExpenses);
     const inDriveNetWeekly = Math.round(inDriveNetMonthly / monthlyWeeks);
+    const inDriveNetDaily = activeDrivingDays > 0 ? Math.round(inDriveNetMonthly / activeDrivingDays) : 0;
 
     // Savings advantage: With fuel at ₦1,400/L, keeping 86.4% vs 75% saves huge cash
     const extraMoneyKept = inDriveFee < competitorFee ? (competitorFee - inDriveFee) : 0;
@@ -92,6 +100,10 @@ class EarningsCalculator {
     return {
       city,
       vehicle,
+      dailyTrips,
+      tripsPerDay: dailyTrips,
+      dailyGross,
+      inDriveNetDaily,
       hoursPerDay: dailyHours,
       daysPerWeek: weeklyDays,
       weeklyHours,

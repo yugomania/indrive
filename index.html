@@ -244,11 +244,28 @@
       <!-- ================= STEP 3: TIME ALLOCATED (HOURS & DAYS) ================= -->
       <section class="wizard-card" id="step-3">
         <div class="step-header">
-          <span class="step-eyebrow">Time Allocation</span>
-          <h2 class="step-title">How much time will you allocate?</h2>
+          <span class="step-eyebrow">Trip & Time Allocation</span>
+          <h2 class="step-title">How many trips & hours will you drive?</h2>
           <p class="step-description">
-            Adjust your expected driving hours per day and days per week.
+            Set your target completed trips per day, daily driving hours, and active days per week.
           </p>
+        </div>
+
+        <!-- Target Trips per Day Slider -->
+        <div class="slider-container">
+          <div class="slider-header">
+            <span class="slider-label">
+              <span>🎯</span> Target completed trips per day
+            </span>
+            <span class="slider-value-badge" id="tripsPerDayDisplay">12 trips / day</span>
+          </div>
+          <input type="range" id="tripsPerDayInput" class="range-slider" min="3" max="25" step="1" value="12">
+          <div class="slider-scale">
+            <span>3 trips</span>
+            <span>10 trips</span>
+            <span>18 trips</span>
+            <span>25 trips</span>
+          </div>
         </div>
 
         <!-- Hours per Day Slider -->
@@ -311,7 +328,7 @@
           <span class="step-eyebrow">Earnings Breakdown</span>
           <h2 class="step-title">Your Estimated Monthly Earnings</h2>
           <p class="step-description">
-            Based on <strong id="summaryHoursTag">40 hrs/week</strong> in <span id="summaryCityTag">Lagos</span>.
+            Based on <strong id="summaryHoursTag">12 trips/day (60 trips/wk • 40 hrs)</strong> in <span id="summaryCityTag">Lagos</span>.
           </p>
         </div>
 
@@ -327,14 +344,21 @@
             Clean take-home after fuel (calculated at ₦1,400/L), maintenance & low 13.6% inDrive fee
           </div>
 
-          <div class="earnings-metrics-row">
+          <div class="earnings-metrics-row three-cells">
+            <div class="metric-cell">
+              <div class="metric-cell-label">Daily Net</div>
+              <div class="metric-cell-value" id="netDailyEarningsDisplay">₦0</div>
+              <div id="dailyTripsSubText" style="font-size: 0.72rem; color: #94A3B8; margin-top: 3px;">12 trips / day</div>
+            </div>
             <div class="metric-cell">
               <div class="metric-cell-label">Weekly Net</div>
               <div class="metric-cell-value" id="netWeeklyEarningsDisplay">₦0</div>
+              <div id="weeklyTripsSubText" style="font-size: 0.72rem; color: #94A3B8; margin-top: 3px;">60 trips / wk</div>
             </div>
             <div class="metric-cell">
               <div class="metric-cell-label">Monthly Gross</div>
               <div class="metric-cell-value" id="grossMonthlyEarningsDisplay">₦0</div>
+              <div id="monthlyTripsSubText" style="font-size: 0.72rem; color: #94A3B8; margin-top: 3px;">260 trips / mo</div>
             </div>
           </div>
 
