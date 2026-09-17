@@ -14,8 +14,7 @@ class EarningsCalculator {
     tripsPerDay = null,
     hoursPerDay = 8,
     daysPerWeek = 5,
-    drivePeakHours = true,
-    fuelPricePerLiter = null
+    drivePeakHours = true
   }) {
     const city = this.config.CITIES[cityKey] || this.config.CITIES['lagos'];
     const vehicle = this.config.VEHICLE_TYPES[vehicleType] || this.config.VEHICLE_TYPES['sedan'];
@@ -59,30 +58,8 @@ class EarningsCalculator {
     const inDriveFeePercent = Math.round(inDriveCommissionRate * 100 * 10) / 10; // 13.6%
     const competitorFeePercent = Math.round(competitorCommissionRate * 100); // 25%
 
-    // Fuel cost calculation (Nigeria PMS price calibrated at ₦1,400/L)
-    const fuelPrice = Number(fuelPricePerLiter) > 0 
-      ? Number(fuelPricePerLiter) 
-      : (this.config.FUEL_PRICE_PER_LITER || 1400);
-
-    // Fuel consumption in litres per driving hour (calibrated for Nigerian urban traffic with AC & idling)
-    const litersPerHour = vehicle.fuelLitersPerHour || (
-      vehicleType === 'moto' ? 0.55 :
-      vehicleType === 'comfort' ? 2.35 :
-      vehicleType === 'delivery' ? 2.10 : 1.85
-    );
-
-    // Peak hours traffic congestion increases idling and fuel burn by ~5%
-    const peakTrafficFuelFactor = drivePeakHours ? 1.05 : 1.0;
-    const monthlyFuelLiters = Math.round(monthlyHours * litersPerHour * peakTrafficFuelFactor);
-    const monthlyFuelExpense = Math.round(monthlyFuelLiters * fuelPrice);
-    const weeklyFuelExpense = Math.round(monthlyFuelExpense / monthlyWeeks);
-
-    // Routine vehicle maintenance & mobile data (approx 7-8% of gross for oil change, brake pads, tires, data plan)
-    const maintenanceRatio = city.maintenanceRatio || 0.08;
-    const monthlyMaintenanceData = Math.round(monthlyGross * maintenanceRatio);
-
-    // Total operational expenses (fuel expense + vehicle maintenance & mobile data)
-    const operationalExpenses = monthlyFuelExpense + monthlyMaintenanceData;
+    // Operational expenses (fuel, mobile data, routine maintenance)
+    const operationalExpenses = Math.round(monthlyGross * (city.fuelMaintenanceRatio || 0.22));
 
     // Net Take-Home pay
     const inDriveNetMonthly = Math.max(0, monthlyGross - inDriveFee - operationalExpenses);
@@ -90,12 +67,9 @@ class EarningsCalculator {
     const inDriveNetWeekly = Math.round(inDriveNetMonthly / monthlyWeeks);
     const inDriveNetDaily = activeDrivingDays > 0 ? Math.round(inDriveNetMonthly / activeDrivingDays) : 0;
 
-    // Savings advantage: With fuel at ₦1,400/L, keeping 86.4% vs 75% saves huge cash
+    // Savings advantage: Keeping 86.4% vs 75%
     const extraMoneyKept = inDriveFee < competitorFee ? (competitorFee - inDriveFee) : 0;
     const extraPercent = competitorNetMonthly > 0 ? Math.round((extraMoneyKept / competitorNetMonthly) * 100) : 25;
-
-    // Fuel support bonus equivalence: How many litres of petrol ₦20,000 gives the driver
-    const bonusLitresEquivalent = Math.round((20000 / fuelPrice) * 10) / 10;
 
     return {
       city,
@@ -120,19 +94,12 @@ class EarningsCalculator {
       competitorCommissionRate,
       competitorFee,
       competitorFeePercent,
-      fuelPricePerLiter: fuelPrice,
-      litersPerHour,
-      monthlyFuelLiters,
-      monthlyFuelExpense,
-      weeklyFuelExpense,
-      monthlyMaintenanceData,
       operationalExpenses,
       inDriveNetMonthly,
       inDriveNetWeekly,
       competitorNetMonthly,
       extraMoneyKept,
       extraPercent,
-      bonusLitresEquivalent,
       currency: city.currency,
       currencyCode: city.currencyCode
     };

@@ -72,11 +72,6 @@
   const extraKeptBadge = document.getElementById('extraKeptBadge');
   const savingsCalloutAmount = document.getElementById('savingsCalloutAmount');
   const finalMonthlyAmountTag = document.getElementById('finalMonthlyAmountTag');
-  const monthlyFuelLitersTag = document.getElementById('monthlyFuelLitersTag');
-  const monthlyFuelCostDisplay = document.getElementById('monthlyFuelCostDisplay');
-  const monthlyMaintenanceDisplay = document.getElementById('monthlyMaintenanceDisplay');
-  const indriveFeeDisplay = document.getElementById('indriveFeeDisplay');
-  const fuelBonusLitersText = document.getElementById('fuelBonusLitersText');
   const earningsCadenceText = document.getElementById('earningsCadenceText');
 
   // Referral Elements
@@ -368,24 +363,8 @@
       savingsCalloutAmount.textContent = `${calculator.formatCurrency(results.extraMoneyKept, curr)}`;
     }
 
-    // Dynamic Fuel & Operating Breakdown based on ₦1,400/L
-    if (monthlyFuelLitersTag) {
-      monthlyFuelLitersTag.textContent = `~${results.monthlyFuelLiters} Litres / mo`;
-    }
-    if (monthlyFuelCostDisplay) {
-      monthlyFuelCostDisplay.textContent = `-${calculator.formatCurrency(results.monthlyFuelExpense, curr)}`;
-    }
-    if (monthlyMaintenanceDisplay) {
-      monthlyMaintenanceDisplay.textContent = `-${calculator.formatCurrency(results.monthlyMaintenanceData, curr)}`;
-    }
-    if (indriveFeeDisplay) {
-      indriveFeeDisplay.textContent = `-${calculator.formatCurrency(results.inDriveFee, curr)}`;
-    }
-    if (fuelBonusLitersText) {
-      fuelBonusLitersText.textContent = `~${results.bonusLitresEquivalent} Litres`;
-    }
     if (earningsCadenceText) {
-      earningsCadenceText.textContent = `Clean take-home after fuel (calculated at ${calculator.formatCurrency(results.fuelPricePerLiter, curr)}/L), maintenance & low inDrive fee`;
+      earningsCadenceText.textContent = `Clean take-home after fuel, maintenance & low ${results.inDriveFeePercent}% inDrive fee`;
     }
 
     const indriveFeePercentText = document.getElementById('indriveFeePercentText');
@@ -495,8 +474,7 @@
       const netMonthly = calculator.formatCurrency(calcResults.inDriveNetMonthly, calcResults.currency);
       const extraSaved = calculator.formatCurrency(calcResults.extraMoneyKept, calcResults.currency);
       const grossMonthly = calculator.formatCurrency(calcResults.monthlyGross, calcResults.currency);
-      const monthlyFuelExpense = `${calculator.formatCurrency(calcResults.monthlyFuelExpense, calcResults.currency)} (~${calcResults.monthlyFuelLiters} Litres at ₦1,400/L)`;
-      const monthlyMaintenance = calculator.formatCurrency(calcResults.monthlyMaintenanceData, calcResults.currency);
+      const operatingExpenses = calculator.formatCurrency(calcResults.operationalExpenses, calcResults.currency);
       const inDriveFee = calculator.formatCurrency(calcResults.inDriveFee, calcResults.currency);
 
       // If user has set an optional Web3Forms key, send via Web3Forms API
@@ -515,8 +493,7 @@
           "Peak Hours Driving": state.drivePeakHours ? 'Yes' : 'No',
           "Estimated Gross Monthly Earnings": grossMonthly,
           "Estimated Daily Net Take-Home": `${calculator.formatCurrency(calcResults.inDriveNetDaily, calcResults.currency)} / day`,
-          "Monthly Fuel Cost (₦1,400/L)": monthlyFuelExpense,
-          "Monthly Maintenance & Data": monthlyMaintenance,
+          "Estimated Operating Expenses (Fuel & Maintenance)": operatingExpenses,
           "inDrive Platform Fee (13.6%)": inDriveFee,
           "Estimated Net Monthly Take-Home": `${netMonthly} / month`,
           "Extra Money Kept vs Competitors": `${extraSaved} / month`,
@@ -554,8 +531,7 @@
           "Peak Hours Driving": state.drivePeakHours ? 'Yes' : 'No',
           "Estimated Gross Monthly Earnings": grossMonthly,
           "Estimated Daily Net Take-Home": `${calculator.formatCurrency(calcResults.inDriveNetDaily, calcResults.currency)} / day`,
-          "Monthly Fuel Cost (₦1,400/L)": monthlyFuelExpense,
-          "Monthly Maintenance & Data": monthlyMaintenance,
+          "Estimated Operating Expenses (Fuel & Maintenance)": operatingExpenses,
           "inDrive Platform Fee (13.6%)": inDriveFee,
           "Estimated Net Monthly Take-Home": `${netMonthly} / month`,
           "Extra Money Kept vs Competitors": `${extraSaved} / month`,

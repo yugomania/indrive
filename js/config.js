@@ -15,9 +15,6 @@ const CONFIG = {
   APP_STORE_URL: 'https://indriver.onelink.me/X6vF/rzajnuar',
   DIRECT_SIGNUP_URL: 'https://indriver.onelink.me/X6vF/rzajnuar',
 
-  // Current fuel cost in Nigeria (PMS petrol price per litre)
-  FUEL_PRICE_PER_LITER: 1400,
-
   // Cities, average trip fares, and local currencies (Nigeria: Lagos & Abuja only)
   CITIES: {
     'lagos': {
@@ -26,8 +23,7 @@ const CONFIG = {
       currencyCode: 'NGN',
       baseTripFare: 4200,
       avgTripsPerHour: 1.6,
-      maintenanceRatio: 0.08, // vehicle maintenance, oil servicing, tires & mobile data
-      fuelMaintenanceRatio: 0.38, // fallback combined ratio (accounting for ₦1,400/L fuel)
+      fuelMaintenanceRatio: 0.22,
       inDriveCommissionRate: 0.136, // 13.6% inDrive
       competitorCommissionRate: 0.25 // ~25% Competitors
     },
@@ -37,19 +33,18 @@ const CONFIG = {
       currencyCode: 'NGN',
       baseTripFare: 4500,
       avgTripsPerHour: 1.5,
-      maintenanceRatio: 0.07, // maintenance & mobile data
-      fuelMaintenanceRatio: 0.36, // fallback combined ratio (accounting for ₦1,400/L fuel)
+      fuelMaintenanceRatio: 0.20,
       inDriveCommissionRate: 0.136, // 13.6% inDrive
       competitorCommissionRate: 0.25
     }
   },
 
-  // Vehicle type multipliers & real-world fuel consumption (litres per driving hour in Nigerian city traffic)
+  // Vehicle type multipliers
   VEHICLE_TYPES: {
-    'sedan': { name: 'Standard Car / Sedan', multiplier: 1.0, icon: 'car', fuelLitersPerHour: 1.85 },
-    'comfort': { name: 'Comfort / SUV', multiplier: 1.25, icon: 'star', fuelLitersPerHour: 2.35 },
-    'moto': { name: 'Motorcycle / Scooter', multiplier: 0.75, icon: 'bike', fuelLitersPerHour: 0.55 },
-    'delivery': { name: 'Courier / Delivery Van', multiplier: 1.15, icon: 'truck', fuelLitersPerHour: 2.10 }
+    'sedan': { name: 'Standard Car / Sedan', multiplier: 1.0, icon: 'car' },
+    'comfort': { name: 'Comfort / SUV', multiplier: 1.25, icon: 'star' },
+    'moto': { name: 'Motorcycle / Scooter', multiplier: 0.75, icon: 'bike' },
+    'delivery': { name: 'Courier / Delivery Van', multiplier: 1.15, icon: 'truck' }
   },
 
   // Lead Notification Email: All driver applications with name & phone are sent directly here!
